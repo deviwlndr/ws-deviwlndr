@@ -3,13 +3,13 @@ package main
 import (
 	"log"
 
-	"iteung/config"
+	"github.com/deviwlndr/ws-deviwlndr/config"
 
 	"github.com/aiteung/musik"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 
 
-	"iteung/url"
+	"github.com/deviwlndr/ws-deviwlndr/url"
 
 	"github.com/gofiber/fiber/v2"
 )

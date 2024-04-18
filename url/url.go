@@ -1,7 +1,7 @@
 package url
 
 import (
-	"iteung/controller"
+	"github.com/deviwlndr/ws-deviwlndr/controller"
 
 	"github.com/gofiber/fiber/v2"
 )

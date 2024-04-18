@@ -4,6 +4,8 @@ import (
 	"github.com/deviwlndr/ws-deviwlndr/controller"
 
 	"github.com/gofiber/fiber/v2"
+
+	
 )
 
 func Web(page *fiber.App) {
@@ -16,5 +18,7 @@ func Web(page *fiber.App) {
 	page.Patch("/", controller.Sink)
 	page.Delete("/", controller.Sink)
 	page.Options("/", controller.Sink)
+
+	page.Get("/checkip", controller.Homepage) //ujicoba panggil package musik
 
 }

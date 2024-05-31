@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"github.com/aiteung/musik"
 	"github.com/gofiber/fiber/v2"
-	cek "github.com/indrariksa/cobapakcage/module"
+	inimodel "github.com/deviwlndr/cobapackage/model"
+	cek "github.com/deviwlndr/cobapackage/module"
 	"github.com/deviwlndr/ws-deviwlndr/config"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -53,3 +54,32 @@ func GetPresensi(c *fiber.Ctx) error {
 		}
 		return c.JSON(ps)
 	}
+
+	func InsertDataPresensi(c *fiber.Ctx) error {
+		db := config.Ulbimongoconn
+		var presensi inimodel.Presensi
+		if err := c.BodyParser(&presensi); err != nil {
+			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+				"status":  http.StatusInternalServerError,
+				"message": err.Error(),
+			})
+		}
+		insertedID, err := cek.InsertPresensi(db, "presensi",
+			presensi.Longitude,
+			presensi.Latitude,
+			presensi.Location,
+			presensi.Phone_number,
+			presensi.Checkin,
+			presensi.Biodata)
+		if err != nil {
+			return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+				"status":  http.StatusInternalServerError,
+				"message": err.Error(),
+			})
+		}
+		return c.Status(http.StatusOK).JSON(fiber.Map{
+			"status":      http.StatusOK,
+			"message":     "Data berhasil disimpan.",
+			"inserted_id": insertedID,
+		})
+	}	

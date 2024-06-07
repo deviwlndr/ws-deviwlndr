@@ -23,8 +23,8 @@ github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSV
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/deviwlndr/cobapackage v0.0.5 h1:wdmnpJKl1G2Jb2X/16bdnmmPf6MKwIeD7N+uSy0eJAc=
-github.com/deviwlndr/cobapackage v0.0.5/go.mod h1:tjHZu6ar4vPDXyzFjk3Cz3xBSuFVIL1xEDQDnlMfzew=
+github.com/deviwlndr/cobapackage v0.0.6 h1:vnelbx4YyucGAWIV8MtJbVKiZGpUHp0o9GHvuh2qfAs=
+github.com/deviwlndr/cobapackage v0.0.6/go.mod h1:cuw+7ZlSO/oqdGN7RG4wRSco5gi1dQLHdGsSvjFu2X4=
 github.com/dnaeon/go-vcr v1.1.0/go.mod h1:M7tiix8f0r6mKKJ3Yq/kqU1OYf3MnfmBWVbPx/yU9ko=
 github.com/dnaeon/go-vcr v1.2.0/go.mod h1:R4UdLID7HZT3taECzJs4YgbbH6PIGXB6W/sc5OLb6RQ=
 github.com/fasthttp/websocket v1.5.3 h1:TPpQuLwJYfd4LJPXvHDYPMFWbLjsT91n3GpWtCQtdek=

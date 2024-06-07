@@ -5,7 +5,7 @@ go 1.22.1
 require (
 	github.com/aiteung/atdb v0.1.7
 	github.com/aiteung/musik v0.0.5
-	github.com/deviwlndr/cobapackage v0.0.5
+	github.com/deviwlndr/cobapackage v0.0.6
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/whatsauth/whatsauth v0.2.9
 	go.mau.fi/whatsmeow v0.0.0-20240327124018-350073db195c

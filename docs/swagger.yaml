@@ -1,4 +1,62 @@
 basePath: /
+definitions:
+  controller.JamKerja:
+    properties:
+      durasi:
+        type: integer
+      gmt:
+        type: integer
+      hari:
+        items:
+          type: string
+        type: array
+      jam_keluar:
+        type: string
+      jam_masuk:
+        type: string
+      piket_tim:
+        type: string
+      shift:
+        type: integer
+    type: object
+  controller.Karyawan:
+    properties:
+      _id:
+        type: string
+      hari_kerja:
+        items:
+          type: string
+        type: array
+      jabatan:
+        type: string
+      jam_kerja:
+        items:
+          $ref: '#/definitions/controller.JamKerja'
+        type: array
+      nama:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  controller.Presensi:
+    properties:
+      _id:
+        type: string
+      biodata:
+        $ref: '#/definitions/controller.Karyawan'
+      checkin:
+        type: string
+      datetime:
+        type: string
+      latitude:
+        type: number
+      location:
+        type: string
+      longitude:
+        type: number
+      phone_number:
+        type: string
+    type: object
 host: ws-deviwlndr-59b3a0157dd7.herokuapp.com
 info:
   contact:
@@ -8,7 +66,22 @@ info:
   description: This is a sample swagger for Fiber
   title: TES SWAGGER ULBI
   version: "1.0"
-paths: {}
+paths:
+  /presensi:
+    get:
+      consumes:
+      - application/json
+      description: Mengambil semua data presensi.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Presensi'
+      summary: Get All Data Presensi.
+      tags:
+      - Presensi
 schemes:
 - https
 - http

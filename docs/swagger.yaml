@@ -82,6 +82,33 @@ paths:
       summary: Get All Data Presensi.
       tags:
       - Presensi
+  /presensi/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Ambil per ID data presensi.
+      parameters:
+      - description: Masukan ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Presensi'
+        "400":
+          description: Bad Request
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Get By ID Data Presensi.
+      tags:
+      - Presensi
 schemes:
 - https
 - http

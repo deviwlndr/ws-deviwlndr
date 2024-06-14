@@ -37,7 +37,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/controller.Presensi"
+                            "$ref": "#/definitions/controller.ReqPresensi"
                         }
                     }
                 ],
@@ -227,6 +227,72 @@
                     "type": "string",
                     "format": "date-time",
                     "example": "2024-09-01T00:00:00Z"
+                },
+                "latitude": {
+                    "type": "number",
+                    "example": 123.12
+                },
+                "location": {
+                    "type": "string",
+                    "example": "Bandung"
+                },
+                "longitude": {
+                    "type": "number",
+                    "example": 123.11
+                },
+                "phone_number": {
+                    "type": "string",
+                    "example": "08123456789"
+                }
+            }
+        },
+        "controller.ReqKaryawan": {
+            "type": "object",
+            "properties": {
+                "hari_kerja": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "Senin",
+                        "Selasa",
+                        "Rabu",
+                        "Kamis",
+                        "Jumat",
+                        "Sabtu",
+                        "Minggu"
+                    ]
+                },
+                "jabatan": {
+                    "type": "string",
+                    "example": "Anonymous"
+                },
+                "jam_kerja": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controller.JamKerja"
+                    }
+                },
+                "nama": {
+                    "type": "string",
+                    "example": "Tes Swagger"
+                },
+                "phone_number": {
+                    "type": "string",
+                    "example": "08123456789"
+                }
+            }
+        },
+        "controller.ReqPresensi": {
+            "type": "object",
+            "properties": {
+                "biodata": {
+                    "$ref": "#/definitions/controller.ReqKaryawan"
+                },
+                "checkin": {
+                    "type": "string",
+                    "example": "Masuk"
                 },
                 "latitude": {
                     "type": "number",

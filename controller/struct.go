@@ -33,3 +33,20 @@ type Presensi struct {
     Checkin      string             `bson:"checkin,omitempty" json:"checkin,omitempty" example:"Masuk"`
     Biodata      Karyawan           `bson:"biodata,omitempty" json:"biodata,omitempty"`
 }
+
+type ReqKaryawan struct {
+    Nama         string     `bson:"nama,omitempty" json:"nama,omitempty" example:"Tes Swagger"`
+    Phone_number string     `bson:"phone_number,omitempty" json:"phone_number,omitempty" example:"08123456789"`
+    Jabatan      string     `bson:"jabatan,omitempty" json:"jabatan,omitempty" example:"Anonymous"`
+    Jam_kerja    []JamKerja `bson:"jam_kerja,omitempty" json:"jam_kerja,omitempty"`
+    Hari_kerja   []string   `bson:"hari_kerja,omitempty" json:"hari_kerja,omitempty" example:"Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu"`
+}
+
+type ReqPresensi struct {
+    Longitude    float64     `bson:"longitude,omitempty" json:"longitude,omitempty" example:"123.11"`
+    Latitude     float64     `bson:"latitude,omitempty" json:"latitude,omitempty" example:"123.12"`
+    Location     string      `bson:"location,omitempty" json:"location,omitempty" example:"Bandung"`
+    Phone_number string      `bson:"phone_number,omitempty" json:"phone_number,omitempty" example:"08123456789"`
+    Checkin      string      `bson:"checkin,omitempty" json:"checkin,omitempty" example:"Masuk"`
+    Biodata      ReqKaryawan `bson:"biodata,omitempty" json:"biodata,omitempty"`
+}

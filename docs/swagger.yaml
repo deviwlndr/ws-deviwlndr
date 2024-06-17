@@ -217,6 +217,37 @@ paths:
       summary: Get By ID Data Presensi.
       tags:
       - Presensi
+  /update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Ubah data presensi.
+      parameters:
+      - description: Masukan ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Payload Body [RAW]
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.ReqPresensi'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.Presensi'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update data presensi.
+      tags:
+      - Presensi
 schemes:
 - https
 - http

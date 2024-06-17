@@ -122,6 +122,53 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/update/{id}": {
+            "put": {
+                "description": "Ubah data presensi.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Presensi"
+                ],
+                "summary": "Update data presensi.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Masukan ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Payload Body [RAW]",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.ReqPresensi"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.Presensi"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
         }
     },
     "definitions": {

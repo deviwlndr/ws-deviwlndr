@@ -149,7 +149,7 @@ info:
   title: TES SWAGGER ULBI
   version: "1.0"
 paths:
-  /ins:
+  /insert:
     post:
       consumes:
       - application/json

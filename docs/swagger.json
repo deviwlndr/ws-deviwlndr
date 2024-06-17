@@ -17,7 +17,7 @@
     "host": "ws-deviwlndr-59b3a0157dd7.herokuapp.com",
     "basePath": "/",
     "paths": {
-        "/ins": {
+        "/insert": {
             "post": {
                 "description": "Input data presensi.",
                 "consumes": [

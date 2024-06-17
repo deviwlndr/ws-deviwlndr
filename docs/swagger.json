@@ -127,43 +127,28 @@
             "type": "object",
             "properties": {
                 "durasi": {
-                    "type": "integer",
-                    "example": 8
+                    "type": "integer"
                 },
                 "gmt": {
-                    "type": "integer",
-                    "example": 7
+                    "type": "integer"
                 },
                 "hari": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "example": [
-                        "Senin",
-                        "Selasa",
-                        "Rabu",
-                        "Kamis",
-                        "Jumat",
-                        "Sabtu",
-                        "Minggu"
-                    ]
+                    }
                 },
                 "jam_keluar": {
-                    "type": "string",
-                    "example": "16:00"
+                    "type": "string"
                 },
                 "jam_masuk": {
-                    "type": "string",
-                    "example": "08:00"
+                    "type": "string"
                 },
                 "piket_tim": {
-                    "type": "string",
-                    "example": "Piket Z"
+                    "type": "string"
                 },
                 "shift": {
-                    "type": "integer",
-                    "example": 2
+                    "type": "integer"
                 }
             }
         },
@@ -171,27 +156,16 @@
             "type": "object",
             "properties": {
                 "_id": {
-                    "type": "string",
-                    "example": "123456789"
+                    "type": "string"
                 },
                 "hari_kerja": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    },
-                    "example": [
-                        "Senin",
-                        "Selasa",
-                        "Rabu",
-                        "Kamis",
-                        "Jumat",
-                        "Sabtu",
-                        "Minggu"
-                    ]
+                    }
                 },
                 "jabatan": {
-                    "type": "string",
-                    "example": "Anonymous"
+                    "type": "string"
                 },
                 "jam_kerja": {
                     "type": "array",
@@ -200,12 +174,10 @@
                     }
                 },
                 "nama": {
-                    "type": "string",
-                    "example": "Tes Swagger"
+                    "type": "string"
                 },
                 "phone_number": {
-                    "type": "string",
-                    "example": "08123456789"
+                    "type": "string"
                 }
             }
         },
@@ -213,36 +185,28 @@
             "type": "object",
             "properties": {
                 "_id": {
-                    "type": "string",
-                    "example": "123456789"
+                    "type": "string"
                 },
                 "biodata": {
                     "$ref": "#/definitions/controller.Karyawan"
                 },
                 "checkin": {
-                    "type": "string",
-                    "example": "Masuk"
+                    "type": "string"
                 },
                 "datetime": {
-                    "type": "string",
-                    "format": "date-time",
-                    "example": "2024-09-01T00:00:00Z"
+                    "type": "string"
                 },
                 "latitude": {
-                    "type": "number",
-                    "example": 123.12
+                    "type": "number"
                 },
                 "location": {
-                    "type": "string",
-                    "example": "Bandung"
+                    "type": "string"
                 },
                 "longitude": {
-                    "type": "number",
-                    "example": 123.11
+                    "type": "number"
                 },
                 "phone_number": {
-                    "type": "string",
-                    "example": "08123456789"
+                    "type": "string"
                 }
             }
         }

@@ -3,58 +3,92 @@ definitions:
   controller.JamKerja:
     properties:
       durasi:
+        example: 8
         type: integer
       gmt:
+        example: 7
         type: integer
       hari:
+        example:
+        - Senin
+        - Selasa
+        - Rabu
+        - Kamis
+        - Jumat
+        - Sabtu
+        - Minggu
         items:
           type: string
         type: array
       jam_keluar:
+        example: "16:00"
         type: string
       jam_masuk:
+        example: "08:00"
         type: string
       piket_tim:
+        example: Piket Z
         type: string
       shift:
+        example: 2
         type: integer
     type: object
   controller.Karyawan:
     properties:
       _id:
+        example: "123456789"
         type: string
       hari_kerja:
+        example:
+        - Senin
+        - Selasa
+        - Rabu
+        - Kamis
+        - Jumat
+        - Sabtu
+        - Minggu
         items:
           type: string
         type: array
       jabatan:
+        example: Anonymous
         type: string
       jam_kerja:
         items:
           $ref: '#/definitions/controller.JamKerja'
         type: array
       nama:
+        example: Tes Swagger
         type: string
       phone_number:
+        example: "08123456789"
         type: string
     type: object
   controller.Presensi:
     properties:
       _id:
+        example: "123456789"
         type: string
       biodata:
         $ref: '#/definitions/controller.Karyawan'
       checkin:
+        example: Masuk
         type: string
       datetime:
+        example: "2024-09-01T00:00:00Z"
+        format: date-time
         type: string
       latitude:
+        example: 123.12
         type: number
       location:
+        example: Bandung
         type: string
       longitude:
+        example: 123.11
         type: number
       phone_number:
+        example: "08123456789"
         type: string
     type: object
 host: ws-deviwlndr-59b3a0157dd7.herokuapp.com

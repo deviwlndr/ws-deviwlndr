@@ -91,54 +91,6 @@ definitions:
         example: "08123456789"
         type: string
     type: object
-  controller.ReqKaryawan:
-    properties:
-      hari_kerja:
-        example:
-        - Senin
-        - Selasa
-        - Rabu
-        - Kamis
-        - Jumat
-        - Sabtu
-        - Minggu
-        items:
-          type: string
-        type: array
-      jabatan:
-        example: Anonymous
-        type: string
-      jam_kerja:
-        items:
-          $ref: '#/definitions/controller.JamKerja'
-        type: array
-      nama:
-        example: Tes Swagger
-        type: string
-      phone_number:
-        example: "08123456789"
-        type: string
-    type: object
-  controller.ReqPresensi:
-    properties:
-      biodata:
-        $ref: '#/definitions/controller.ReqKaryawan'
-      checkin:
-        example: Masuk
-        type: string
-      latitude:
-        example: 123.12
-        type: number
-      location:
-        example: Bandung
-        type: string
-      longitude:
-        example: 123.11
-        type: number
-      phone_number:
-        example: "08123456789"
-        type: string
-    type: object
 host: ws-deviwlndr-59b3a0157dd7.herokuapp.com
 info:
   contact:
@@ -160,7 +112,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/controller.ReqPresensi'
+          $ref: '#/definitions/controller.Presensi'
       produces:
       - application/json
       responses:

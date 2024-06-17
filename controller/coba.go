@@ -82,11 +82,11 @@ func GetPresensi(c *fiber.Ctx) error {
 // @Tags Presensi
 // @Accept json
 // @Produce json
-// @Param request body ReqPresensi true "Payload Body [RAW]"
+// @Param request body Presensi true "Payload Body [RAW]"
 // @Success 200 {object} Presensi
 // @Failure 400
 // @Failure 500
-// @Router /ins [post]	
+// @Router /ins [post]
 	func InsertDataPresensi(c *fiber.Ctx) error {
 		db := config.Ulbimongoconn
 		var presensi inimodel.Presensi

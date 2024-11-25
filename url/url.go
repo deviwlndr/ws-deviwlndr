@@ -25,7 +25,7 @@ func Web(page *fiber.App) {
 
 	page.Get("/mahasiswa/:id", controller.GetMahasiswaID) //menampilkan data presensi berdasarkan id
 
-	// page.Post("/insert", controller.InsertDataPresensi)
+	page.Post("/insertmahasiswa", controller.InsertDataMahasiswa)
 
 	// page.Put("/update/:id", controller.UpdateData)
 

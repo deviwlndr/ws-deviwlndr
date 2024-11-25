@@ -21,15 +21,15 @@ func Web(page *fiber.App) {
 
 	page.Get("/checkip", controller.Homepage) //ujicoba panggil package musik
 
-	page.Get("/presensi", controller.GetPresensi)
+	page.Get("/mahasiswa", controller.GetMahasiswa)
 
-	page.Get("/presensi/:id", controller.GetPresensiID) //menampilkan data presensi berdasarkan id
+	// page.Get("/presensi/:id", controller.GetPresensiID) //menampilkan data presensi berdasarkan id
 
-	page.Post("/insert", controller.InsertDataPresensi)
+	// page.Post("/insert", controller.InsertDataPresensi)
 
-	page.Put("/update/:id", controller.UpdateData)
+	// page.Put("/update/:id", controller.UpdateData)
 
-	page.Delete("/delete/:id", controller.DeletePresensiByID)
+	// page.Delete("/delete/:id", controller.DeletePresensiByID)
 
 	page.Get("/docs/*", swagger.HandlerDefault)
 }

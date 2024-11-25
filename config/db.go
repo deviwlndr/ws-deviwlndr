@@ -13,7 +13,7 @@ var MongoString string = os.Getenv("MONGOSTRING")
 
 var DBUlbimongoinfo = atdb.DBInfo{
 	DBString: MongoString,
-	DBName:   "tesdb2024",
+	DBName:   "data_mahasiswa",
 }
 
 var Ulbimongoconn = atdb.MongoConnect(DBUlbimongoinfo)

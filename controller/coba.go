@@ -70,7 +70,7 @@ func GetMahasiswaID(c *fiber.Ctx) error {
 }
 
 func GetMahasiswaFromNPM(c *fiber.Ctx) error {
-    npm := c.Params("npm")
+    npm := c.Params("npm") // mengambil parameter npm dari URL
     if npm == "" {
         return c.Status(http.StatusBadRequest).JSON(fiber.Map{
             "status":  http.StatusBadRequest,
@@ -78,8 +78,8 @@ func GetMahasiswaFromNPM(c *fiber.Ctx) error {
         })
     }
 
-    // Konversi npm ke integer jika menggunakan format integer untuk NPM
-    _, err := strconv.Atoi(npm)  // Mengonversi npm string menjadi integer
+    // Mengonversi npm yang berupa string ke integer
+    npmInt, err := strconv.Atoi(npm)  // Mengonversi npm string menjadi integer
     if err != nil {
         return c.Status(http.StatusBadRequest).JSON(fiber.Map{
             "status":  http.StatusBadRequest,
@@ -87,14 +87,14 @@ func GetMahasiswaFromNPM(c *fiber.Ctx) error {
         })
     }
 
-    // Panggil fungsi GetMahasiswaFromNPM dari cek untuk mengambil data berdasarkan npm
-    mahasiswa := cek.GetMahasiswaFromNPM(npm)  // Langsung panggil fungsi
+    // Panggil fungsi GetMahasiswaFromNPM untuk mengambil data berdasarkan npm
+    mahasiswa := cek.GetMahasiswaFromNPM(npmInt)  // Panggil fungsi dengan npm dalam format integer
 
     // Periksa apakah data mahasiswa ditemukan
-    if mahasiswa.Npm == 0 {  // Misalnya, NPM 0 berarti data tidak ditemukan
+    if mahasiswa.Npm == 0 {  // Jika Npm 0 berarti data tidak ditemukan
         return c.Status(http.StatusNotFound).JSON(fiber.Map{
             "status":  http.StatusNotFound,
-            "message": fmt.Sprintf("No data found for NPM %s", npm),
+            "message": fmt.Sprintf("No data found for NPM %d", npmInt),
         })
     }
 
@@ -105,6 +105,8 @@ func GetMahasiswaFromNPM(c *fiber.Ctx) error {
         "mahasiswa": mahasiswa,
     })
 }
+
+
 
 func InsertDataMahasiswa(c *fiber.Ctx) error {
 	var mahasiswa inimodel.Mahasiswa
@@ -146,7 +148,7 @@ func UpdateDataMahasiswa(c *fiber.Ctx) error {
 	}
 
 	// Parsing body request ke struct Mahasiswa
-	var mahasiswa inimodel.Mahasiswa
+	var mahasiswa inimodel.Mahasiswa  // Pastikan menggunakan model yang tepat
 	if err := c.BodyParser(&mahasiswa); err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  http.StatusInternalServerError,
@@ -164,16 +166,24 @@ func UpdateDataMahasiswa(c *fiber.Ctx) error {
 
 	// Panggil fungsi UpdateMahasiswa dengan NPM dan struct Mahasiswa
 	success, err := cek.UpdateMahasiswa(
-		npm,         // NPM mahasiswa untuk mencari data
-		mahasiswa,   // Struct Mahasiswa yang berisi data yang ingin diupdate
+		mahasiswa.Npm,         // NPM mahasiswa untuk mencari data
+		mahasiswa,             // Struct Mahasiswa yang berisi data yang ingin diupdate
 	)
 
 	// Jika terjadi error atau update gagal
-	if err != nil || !success {
+	if err != nil {
+		// Menyediakan pesan error yang lebih jelas jika update gagal
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  http.StatusInternalServerError,
-			"message": "Failed to update mahasiswa data",
-			"error":   err.Error(),
+			"message": fmt.Sprintf("Failed to update mahasiswa data: %v", err),
+		})
+	}
+
+	if !success {
+		// Jika tidak ada data yang diupdate (misalnya mahasiswa tidak ditemukan)
+		return c.Status(http.StatusNotFound).JSON(fiber.Map{
+			"status":  http.StatusNotFound,
+			"message": fmt.Sprintf("No mahasiswa found with NPM %d", mahasiswa.Npm),
 		})
 	}
 

@@ -3,6 +3,7 @@ package controller
 import (
 	"errors"
 	"fmt"
+	"strconv"  
 	"github.com/aiteung/musik"
 	"github.com/gofiber/fiber/v2"
 	inimodel"github.com/mhrndiva/kemahasiswaan/model"
@@ -69,34 +70,41 @@ func GetMahasiswaID(c *fiber.Ctx) error {
 }
 
 func GetMahasiswaFromNPM(c *fiber.Ctx) error {
-	// Ambil NPM dari parameter URL
-	npm := c.Params("npm")
-	if npm == "" {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-			"status":  http.StatusBadRequest,
-			"message": "NPM is required",
-		})
-	}
+    npm := c.Params("npm")
+    if npm == "" {
+        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+            "status":  http.StatusBadRequest,
+            "message": "NPM parameter is required",
+        })
+    }
 
-	// Panggil fungsi GetMahasiswaFromNPM untuk mendapatkan data mahasiswa berdasarkan NPM
-	mahasiswa := cek.GetMahasiswaFromNPM(npm)
-	
-	// Jika mahasiswa tidak ditemukan (misalnya data kosong atau error)
-	if mahasiswa.Npm == 0 {
-		return c.Status(http.StatusNotFound).JSON(fiber.Map{
-			"status":  http.StatusNotFound,
-			"message": "Mahasiswa not found",
-		})
-	}
+    // Konversi npm ke integer jika menggunakan format integer untuk NPM
+    _, err := strconv.Atoi(npm)  // Mengonversi npm string menjadi integer
+    if err != nil {
+        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+            "status":  http.StatusBadRequest,
+            "message": "Invalid NPM format, should be a number",
+        })
+    }
 
-	// Jika berhasil, kirim respon sukses dengan data mahasiswa
-	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"status":    http.StatusOK,
-		"message":   "Mahasiswa data found",
-		"mahasiswa": mahasiswa,
-	})
+    // Panggil fungsi GetMahasiswaFromNPM dari cek untuk mengambil data berdasarkan npm
+    mahasiswa := cek.GetMahasiswaFromNPM(npm)  // Langsung panggil fungsi
+
+    // Periksa apakah data mahasiswa ditemukan
+    if mahasiswa.Npm == 0 {  // Misalnya, NPM 0 berarti data tidak ditemukan
+        return c.Status(http.StatusNotFound).JSON(fiber.Map{
+            "status":  http.StatusNotFound,
+            "message": fmt.Sprintf("No data found for NPM %s", npm),
+        })
+    }
+
+    // Mengembalikan data mahasiswa yang ditemukan
+    return c.JSON(fiber.Map{
+        "status":    http.StatusOK,
+        "message":   "Data found",
+        "mahasiswa": mahasiswa,
+    })
 }
-
 
 func InsertDataMahasiswa(c *fiber.Ctx) error {
 	var mahasiswa inimodel.Mahasiswa

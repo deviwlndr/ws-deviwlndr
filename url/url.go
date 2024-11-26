@@ -22,7 +22,7 @@ func Web(page *fiber.App) {
 	page.Get("/checkip", controller.Homepage) //ujicoba panggil package musik
 	page.Get("/mahasiswa", controller.GetMahasiswa)
 	page.Get("/mahasiswa/:id", controller.GetMahasiswaID) //menampilkan data presensi berdasarkan id
-	page.Get("/mahasiswa/:npm", controller.GetMahasiswaFromNPM) //menampilkan data presensi berdasarkan id
+	page.Get("/mahasiswa/npm/:npm", controller.GetMahasiswaFromNPM) //menampilkan data presensi berdasarkan id
 	page.Post("/insertmahasiswa", controller.InsertDataMahasiswa)
 	page.Put("/update/:npm", controller.UpdateDataMahasiswa)
 

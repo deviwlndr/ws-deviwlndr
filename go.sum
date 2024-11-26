@@ -95,8 +95,8 @@ github.com/mattn/go-runewidth v0.0.15 h1:UNAjwbU9l54TA3KzvqLGxwWjHmMgBUVhBiTjelZ
 github.com/mattn/go-runewidth v0.0.15/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
 github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o4kU=
 github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
-github.com/mhrndiva/kemahasiswaan v0.0.16 h1:vzn5ptx6Hi5/1K2TJlJlxCG5c4APqhpW4ZnBEWumN1I=
-github.com/mhrndiva/kemahasiswaan v0.0.16/go.mod h1:MGQRUORBXzLoK+ukhegF5pEDyasiWC76EEYj6cOBZ6Y=
+github.com/mhrndiva/kemahasiswaan v0.0.17 h1:+jVasy8nOgt8N/fkCa4O7LnfGVYPh8G+q8rtS0trVxU=
+github.com/mhrndiva/kemahasiswaan v0.0.17/go.mod h1:MGQRUORBXzLoK+ukhegF5pEDyasiWC76EEYj6cOBZ6Y=
 github.com/microsoft/go-mssqldb v1.0.0 h1:k2p2uuG8T5T/7Hp7/e3vMGTnnR0sU4h8d1CcC71iLHU=
 github.com/microsoft/go-mssqldb v1.0.0/go.mod h1:+4wZTUnz/SV6nffv+RRRB/ss8jPng5Sho2SmM1l2ts4=
 github.com/modocache/gover v0.0.0-20171022184752-b58185e213c5/go.mod h1:caMODM3PzxT8aQXRPkAt8xlV/e7d7w8GM5g0fa5F0D8=

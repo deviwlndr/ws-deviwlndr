@@ -97,6 +97,56 @@ func InsertDataMahasiswa(c *fiber.Ctx) error {
 	})
 }
 
+func UpdateDataMahasiswa(c *fiber.Ctx) error {
+	// Ambil NPM dari parameter URL
+	npm := c.Params("npm")
+	if npm == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "NPM is required",
+		})
+	}
+
+	// Parsing body request ke struct Mahasiswa
+	var mahasiswa inimodel.Mahasiswa
+	if err := c.BodyParser(&mahasiswa); err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": err.Error(),
+		})
+	}
+
+	// Validasi data Mahasiswa
+	if mahasiswa.Npm == 0 || mahasiswa.Nama == "" || mahasiswa.Phone_number == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "NPM, Nama, and Phone_number are required",
+		})
+	}
+
+	// Panggil fungsi UpdateMahasiswa dengan NPM dan struct Mahasiswa
+	success, err := cek.UpdateMahasiswa(
+		npm,         // NPM mahasiswa untuk mencari data
+		mahasiswa,   // Struct Mahasiswa yang berisi data yang ingin diupdate
+	)
+
+	// Jika terjadi error atau update gagal
+	if err != nil || !success {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": "Failed to update mahasiswa data",
+			"error":   err.Error(),
+		})
+	}
+
+	// Jika berhasil, kirim respon sukses
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  http.StatusOK,
+		"message": "Mahasiswa data successfully updated",
+	})
+}
+
+
 
 // InsertDataPresensi godoc
 // @Summary Insert data presensi.

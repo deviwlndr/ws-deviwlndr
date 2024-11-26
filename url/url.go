@@ -25,8 +25,7 @@ func Web(page *fiber.App) {
 	page.Get("/mahasiswa/npm/:npm", controller.GetMahasiswaFromNPM) //menampilkan data presensi berdasarkan id
 	page.Post("/insertmahasiswa", controller.InsertDataMahasiswa)
 	page.Put("/update/:npm", controller.UpdateDataMahasiswa)
-
-	// page.Delete("/delete/:id", controller.DeletePresensiByID)
+	page.Delete("/delete/:npm", controller.DeleteMahasiswaByNPM)
 
 	page.Get("/docs/*", swagger.HandlerDefault)
 }

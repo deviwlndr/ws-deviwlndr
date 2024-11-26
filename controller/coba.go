@@ -3,7 +3,7 @@ package controller
 import (
 	"errors"
 	"fmt"
-	"strconv"  
+	"strconv" 
 	"github.com/aiteung/musik"
 	"github.com/gofiber/fiber/v2"
 	inimodel"github.com/mhrndiva/kemahasiswaan/model"
@@ -194,7 +194,38 @@ func UpdateDataMahasiswa(c *fiber.Ctx) error {
 	})
 }
 
+func DeleteMahasiswaByNPM(c *fiber.Ctx) error {
+    npm := c.Params("npm")
+    if npm == "" {
+        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+            "status":  http.StatusBadRequest,
+            "message": "NPM is required",
+        })
+    }
 
+    // Mengonversi npm menjadi integer
+    npmInt, err := strconv.Atoi(npm)
+    if err != nil {
+        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+            "status":  http.StatusBadRequest,
+            "message": "Invalid NPM format, should be a number",
+        })
+    }
+
+    // Panggil fungsi untuk menghapus mahasiswa berdasarkan NPM
+    err = cek.DeleteMahasiswaByNPM(npmInt)  // Pastikan fungsi ini ada di dalam cek
+    if err != nil {
+        return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+            "status":  http.StatusInternalServerError,
+            "message": fmt.Sprintf("Error deleting data for NPM %d", npmInt),
+        })
+    }
+
+    return c.Status(http.StatusOK).JSON(fiber.Map{
+        "status":  http.StatusOK,
+        "message": fmt.Sprintf("Data with NPM %d deleted successfully", npmInt),
+    })
+}
 
 // InsertDataPresensi godoc
 // @Summary Insert data presensi.

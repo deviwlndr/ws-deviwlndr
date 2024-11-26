@@ -227,149 +227,162 @@ func DeleteMahasiswaByNPM(c *fiber.Ctx) error {
     })
 }
 
+//DOSEN 
+func GetDosenFromKodeDosen(c *fiber.Ctx) error {
+	// Ambil kode_dosen dari parameter URL
+	kodeDosen := c.Params("kode_dosen")
+	if kodeDosen == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "kode_dosen parameter is required",
+		})
+	}
 
-// InsertDataPresensi godoc
-// @Summary Insert data presensi.
-// @Description Input data presensi.
-// @Tags Presensi
-// @Accept json
-// @Produce json
-// @Param request body ReqPresensi true "Payload Body [RAW]"
-// @Success 200 {object} Presensi
-// @Failure 400
-// @Failure 500
-// @Router /insert [post]
-// func InsertMahasiswa(c *fiber.Ctx) error {
-// 	db := config.Ulbimongoconn
-// 	var presensi inimodel.Mahasiswa
+	// Mengonversi kode_dosen menjadi integer
+	kodeDosenInt, err := strconv.Atoi(kodeDosen)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid kode_dosen format, should be a number",
+		})
+	}
+
+	// Panggil fungsi GetDosenFromKodeDosen untuk mendapatkan data dosen
+	dosen := cek.GetDosenFromKodeDosen(kodeDosenInt)
+	if dosen.Kode_dosen == 0 {
+		return c.Status(http.StatusNotFound).JSON(fiber.Map{
+			"status":  http.StatusNotFound,
+			"message": fmt.Sprintf("No data found for kode_dosen %d", kodeDosenInt),
+		})
+	}
+
+	// Jika berhasil, kirim respon dengan data dosen
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status": http.StatusOK,
+		"message": fmt.Sprintf("Data found for kode_dosen %d", kodeDosenInt),
+		"dosen": dosen,
+	})
+}
 
 
-// 	if err := c.BodyParser(&presensi); err != nil {
-// 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-// 			"status":  http.StatusInternalServerError,
-// 			"message": err.Error(),
-// 		})
-// 	}
+// InsertDosen handles the insertion of a new Dosen
+func InsertDosen(c *fiber.Ctx) error {
+	// Parsing body request ke struct Dosen
+	var dosen inimodel.Dosen
+	if err := c.BodyParser(&dosen); err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": err.Error(),
+		})
+	}
 
+	// Validasi data Dosen
+	if dosen.Nama == "" || dosen.Kode_dosen == 0 || dosen.Phone_number == "" || dosen.Matkul == "" || dosen.Email == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Nama, Kode_dosen, Phone_number, Matkul, and Email are required",
+		})
+	}
 
-// 	insertedID, err := cek.InsertMahasiswa(db, "mahasiswa",
-// 		presensi.Nama,         // string
-// 		presensi.Npm,          // string
-// 		presensi.Phone_number, // string
-// 		presensi.Poin,         // int
-// 		presensi.Jurusan,      // string
-// 		presensi.Email,        // string
-// 	)
-// 	if err != nil {
-// 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-// 			"status":  http.StatusInternalServerError,
-// 			"message": err.Error(),
-// 		})
-// 	}
+	// Panggil fungsi InsertDosen untuk menyimpan data dosen ke database
+	insertedID := cek.InsertDosen(dosen.Nama, dosen.Kode_dosen, dosen.Phone_number, dosen.Matkul, dosen.Email)
 
-// 	return c.Status(http.StatusOK).JSON(fiber.Map{
-// 		"status":      http.StatusOK,
-// 		"message":     "Data berhasil disimpan.",
-// 		"inserted_id": insertedID,
-// 	})
-// }
+	// Jika berhasil, kirim respon sukses dengan ID yang dimasukkan
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":   http.StatusOK,
+		"message":  "Dosen successfully inserted",
+		"insertedID": insertedID,
+	})
+}
 
-// UpdateData godoc
-// @Summary Update data presensi.
-// @Description Ubah data presensi.
-// @Tags Presensi
-// @Accept json
-// @Produce json
-// @Param id path string true "Masukan ID"
-// @Param request body ReqPresensi true "Payload Body [RAW]"
-// @Success 200 {object} Presensi
-// @Failure 400
-// @Failure 500
-// @Router /update/{id} [put]
-	// func UpdateData(c *fiber.Ctx) error {
-	// 	db := config.Ulbimongoconn
-	
-	// 	// Get the ID from the URL parameter
-	// 	id := c.Params("id")
-	
-	// 	// Parse the ID into an ObjectID
-	// 	objectID, err := primitive.ObjectIDFromHex(id)
-	// 	if err != nil {
-	// 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-	// 			"status":  http.StatusInternalServerError,
-	// 			"message": err.Error(),
-	// 		})
-	// 	}
-	
-	// 	// Parse the request body into a Presensi object
-	// 	var presensi inimodel.Presensi
-	// 	if err := c.BodyParser(&presensi); err != nil {
-	// 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-	// 			"status":  http.StatusInternalServerError,
-	// 			"message": err.Error(),
-	// 		})
-	// 	}
-	
-	// 	// Call the UpdatePresensi function with the parsed ID and the Presensi object
-	// 	err = cek.UpdatePresensi(db, "presensi",
-	// 		objectID,
-	// 		presensi.Longitude,
-	// 		presensi.Latitude,
-	// 		presensi.Location,
-	// 		presensi.Phone_number,
-	// 		presensi.Checkin,
-	// 		presensi.Biodata)
-	// 	if err != nil {
-	// 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-	// 			"status":  http.StatusInternalServerError,
-	// 			"message": err.Error(),
-	// 		})
-	// 	}
-	
-	// 	return c.Status(http.StatusOK).JSON(fiber.Map{
-	// 		"status":  http.StatusOK,
-	// 		"message": "Data successfully updated",
-	// 	})
-	// }
+func UpdateDosen(c *fiber.Ctx) error {
+	// Ambil kode_dosen dari parameter URL
+	kodeDosen := c.Params("kode_dosen")
+	if kodeDosen == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "kode_dosen parameter is required",
+		})
+	}
 
-// DeletePresensiByID godoc
-// @Summary Delete data presensi.
-// @Description Hapus data presensi.
-// @Tags Presensi
-// @Accept json
-// @Produce json
-// @Param id path string true "Masukan ID"
-// @Success 200
-// @Failure 400
-// @Failure 500
-// @Router /delete/{id} [delete]
-	// func DeletePresensiByID(c *fiber.Ctx) error {
-	// 	id := c.Params("id")
-	// 	if id == "" {
-	// 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-	// 			"status":  http.StatusInternalServerError,
-	// 			"message": "Wrong parameter",
-	// 		})
-	// 	}
-	
-	// 	objID, err := primitive.ObjectIDFromHex(id)
-	// 	if err != nil {
-	// 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-	// 			"status":  http.StatusBadRequest,
-	// 			"message": "Invalid id parameter",
-	// 		})
-	// 	}
-	
-	// 	err = cek.DeletePresensiByID(objID, config.Ulbimongoconn, "presensi")
-	// 	if err != nil {
-	// 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-	// 			"status":  http.StatusInternalServerError,
-	// 			"message": fmt.Sprintf("Error deleting data for id %s", id),
-	// 		})
-	// 	}
-	
-	// 	return c.Status(http.StatusOK).JSON(fiber.Map{
-	// 		"status":  http.StatusOK,
-	// 		"message": fmt.Sprintf("Data with id %s deleted successfully", id),
-	// 	})
-	// }	
+	// Mengonversi kode_dosen menjadi integer
+	kodeDosenInt, err := strconv.Atoi(kodeDosen)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid kode_dosen format, should be a number",
+		})
+	}
+
+	// Parsing body request ke struct Dosen
+	var updatedDosen inimodel.Dosen
+	if err := c.BodyParser(&updatedDosen); err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": err.Error(),
+		})
+	}
+
+	// Validasi data Dosen
+	if updatedDosen.Nama == "" || updatedDosen.Phone_number == "" || updatedDosen.Matkul == "" || updatedDosen.Email == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Nama, Phone_number, Matkul, and Email are required",
+		})
+	}
+
+	// Panggil fungsi UpdateDosen untuk memperbarui data dosen
+	success, err := cek.UpdateDosen(kodeDosenInt, updatedDosen)
+
+	// Jika terjadi error atau update gagal
+	if err != nil || !success {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": fmt.Sprintf("Failed to update dosen with kode_dosen %d", kodeDosenInt),
+			"error":   err.Error(),
+		})
+	}
+
+	// Jika berhasil, kirim respon sukses
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  http.StatusOK,
+		"message": fmt.Sprintf("Dosen with kode_dosen %d successfully updated", kodeDosenInt),
+	})
+}
+
+func DeleteDosenByKodeDosen(c *fiber.Ctx) error {
+	// Ambil kode_dosen dari parameter URL
+	kodeDosen := c.Params("kode_dosen")
+	if kodeDosen == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "kode_dosen parameter is required",
+		})
+	}
+
+	// Mengonversi kode_dosen menjadi integer
+	kodeDosenInt, err := strconv.Atoi(kodeDosen)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid kode_dosen format, should be a number",
+		})
+	}
+
+	// Panggil fungsi DeleteDosenByKodeDosen untuk menghapus data dosen
+	err = cek.DeleteDosenByKodeDosen(kodeDosenInt)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": fmt.Sprintf("Error deleting data for kode_dosen %d", kodeDosenInt),
+			"error":   err.Error(),
+		})
+	}
+
+	// Jika berhasil, kirim respon sukses
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  http.StatusOK,
+		"message": fmt.Sprintf("Dosen with kode_dosen %d successfully deleted", kodeDosenInt),
+	})
+}
+

@@ -68,6 +68,36 @@ func GetMahasiswaID(c *fiber.Ctx) error {
 	return c.JSON(ps)
 }
 
+func GetMahasiswaFromNPM(c *fiber.Ctx) error {
+	// Ambil NPM dari parameter URL
+	npm := c.Params("npm")
+	if npm == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "NPM is required",
+		})
+	}
+
+	// Panggil fungsi GetMahasiswaFromNPM untuk mendapatkan data mahasiswa berdasarkan NPM
+	mahasiswa := cek.GetMahasiswaFromNPM(npm)
+	
+	// Jika mahasiswa tidak ditemukan (misalnya data kosong atau error)
+	if mahasiswa.Npm == 0 {
+		return c.Status(http.StatusNotFound).JSON(fiber.Map{
+			"status":  http.StatusNotFound,
+			"message": "Mahasiswa not found",
+		})
+	}
+
+	// Jika berhasil, kirim respon sukses dengan data mahasiswa
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":    http.StatusOK,
+		"message":   "Mahasiswa data found",
+		"mahasiswa": mahasiswa,
+	})
+}
+
+
 func InsertDataMahasiswa(c *fiber.Ctx) error {
 	var mahasiswa inimodel.Mahasiswa
 

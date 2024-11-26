@@ -20,14 +20,11 @@ func Web(page *fiber.App) {
 	page.Options("/", controller.Sink)
 
 	page.Get("/checkip", controller.Homepage) //ujicoba panggil package musik
-
 	page.Get("/mahasiswa", controller.GetMahasiswa)
-
 	page.Get("/mahasiswa/:id", controller.GetMahasiswaID) //menampilkan data presensi berdasarkan id
-
+	page.Get("/mahasiswa/npmd", controller.GetMahasiswaFromNPM) //menampilkan data presensi berdasarkan id
 	page.Post("/insertmahasiswa", controller.InsertDataMahasiswa)
-
-	// page.Put("/update/:id", controller.UpdateData)
+	page.Put("/update/:npm", controller.UpdateDataMahasiswa)
 
 	// page.Delete("/delete/:id", controller.DeletePresensiByID)
 

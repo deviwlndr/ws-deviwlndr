@@ -295,28 +295,29 @@ func InsertDosen(c *fiber.Ctx) error {
 	})
 }
 
+// UpdateDosen handles updating an existing Dosen
 func UpdateDosen(c *fiber.Ctx) error {
-	// Ambil kode_dosen dari parameter URL
+	// Parsing parameter Kode_dosen dari URL
 	kodeDosen := c.Params("kode_dosen")
 	if kodeDosen == "" {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  http.StatusBadRequest,
-			"message": "kode_dosen parameter is required",
+			"message": "Kode_dosen is required",
 		})
 	}
 
-	// Mengonversi kode_dosen menjadi integer
+	// Konversi kodeDosen dari string ke int
 	kodeDosenInt, err := strconv.Atoi(kodeDosen)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  http.StatusBadRequest,
-			"message": "Invalid kode_dosen format, should be a number",
+			"message": "Invalid Kode_dosen format",
 		})
 	}
 
 	// Parsing body request ke struct Dosen
-	var updatedDosen inimodel.Dosen
-	if err := c.BodyParser(&updatedDosen); err != nil {
+	var dosen inimodel.Dosen
+	if err := c.BodyParser(&dosen); err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  http.StatusInternalServerError,
 			"message": err.Error(),
@@ -324,31 +325,44 @@ func UpdateDosen(c *fiber.Ctx) error {
 	}
 
 	// Validasi data Dosen
-	if updatedDosen.Nama == "" || updatedDosen.Phone_number == "" || updatedDosen.Matkul == "" || updatedDosen.Email == "" {
+	if dosen.Nama == "" || dosen.Phone_number == "" || dosen.Matkul == "" || dosen.Email == "" {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  http.StatusBadRequest,
 			"message": "Nama, Phone_number, Matkul, and Email are required",
 		})
 	}
 
-	// Panggil fungsi UpdateDosen untuk memperbarui data dosen
-	success, err := cek.UpdateDosen(kodeDosenInt, updatedDosen)
-
-	// Jika terjadi error atau update gagal
-	if err != nil || !success {
+	// Panggil fungsi UpdateDosen untuk memperbarui data dosen di database berdasarkan Kode_dosen
+	success, err := cek.UpdateDosen(kodeDosenInt, dosen)
+	if err != nil {
+		if err.Error() == "no dosen found" {
+			return c.Status(http.StatusNotFound).JSON(fiber.Map{
+				"status":  http.StatusNotFound,
+				"message": "No Dosen found with the provided Kode_dosen",
+			})
+		}
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  http.StatusInternalServerError,
-			"message": fmt.Sprintf("Failed to update dosen with kode_dosen %d", kodeDosenInt),
-			"error":   err.Error(),
+			"message": err.Error(),
 		})
 	}
 
 	// Jika berhasil, kirim respon sukses
-	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"status":  http.StatusOK,
-		"message": fmt.Sprintf("Dosen with kode_dosen %d successfully updated", kodeDosenInt),
+	if success {
+		return c.Status(http.StatusOK).JSON(fiber.Map{
+			"status":  http.StatusOK,
+			"message": "Dosen successfully updated",
+		})
+	}
+
+	return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+		"status":  http.StatusInternalServerError,
+		"message": "Unknown error occurred during update",
 	})
 }
+
+
+
 
 func DeleteDosenByKodeDosen(c *fiber.Ctx) error {
 	// Ambil kode_dosen dari parameter URL

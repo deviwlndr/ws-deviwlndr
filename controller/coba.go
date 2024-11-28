@@ -298,20 +298,11 @@ func InsertDosen(c *fiber.Ctx) error {
 // UpdateDosen handles updating an existing Dosen
 func UpdateDosen(c *fiber.Ctx) error {
 	// Parsing parameter Kode_dosen dari URL
-	kodeDosen := c.Params("kode_dosen")
-	if kodeDosen == "" {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-			"status":  http.StatusBadRequest,
-			"message": "Kode_dosen is required",
-		})
-	}
-
-	// Konversi kodeDosen dari string ke int
-	kodeDosenInt, err := strconv.Atoi(kodeDosen)
+	kodeDosenInt, err := c.ParamsInt("kode_dosen")
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  http.StatusBadRequest,
-			"message": "Invalid Kode_dosen format",
+			"message": "Invalid or missing Kode_dosen",
 		})
 	}
 
@@ -360,6 +351,7 @@ func UpdateDosen(c *fiber.Ctx) error {
 		"message": "Unknown error occurred during update",
 	})
 }
+
 
 
 

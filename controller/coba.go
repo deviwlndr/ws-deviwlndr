@@ -295,7 +295,7 @@ func InsertDosen(c *fiber.Ctx) error {
 	})
 }
 
-// UpdateDataDosen handles the HTTP request for updating a dosen record based on kode_dosen
+/// UpdateDataDosen handles the HTTP request for updating a dosen record based on kode_dosen
 func UpdateDataDosen(c *fiber.Ctx) error {
 	// Get the kode_dosen from the URL parameter
 	kodeDosen := c.Params("kode_dosen")
@@ -318,6 +318,9 @@ func UpdateDataDosen(c *fiber.Ctx) error {
 		})
 	}
 
+	// Log the kode_dosen and check if it exists
+	fmt.Printf("Attempting to update dosen with kode_dosen: %d\n", kodeDosenInt)
+
 	// Call the UpdateDosen function with kode_dosen and the Dosen object
 	updated, err := cek.UpdateDosen(kodeDosenInt, dosen)
 	if err != nil {
@@ -327,6 +330,7 @@ func UpdateDataDosen(c *fiber.Ctx) error {
 		})
 	}
 
+	// Check if update was successful
 	if !updated {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{
 			"status":  http.StatusNotFound,
@@ -340,6 +344,7 @@ func UpdateDataDosen(c *fiber.Ctx) error {
 		"message": "Data successfully updated",
 	})
 }
+
 
 
 

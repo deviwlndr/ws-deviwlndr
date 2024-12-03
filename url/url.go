@@ -32,7 +32,7 @@ func Web(page *fiber.App) {
 	page.Get("/dosen/:kode_dosen", controller.GetDosenFromKodeDosen)
 	page.Post("/insertdosen", controller.InsertDosen)
 	page.Put("dosen/update/:kode_dosen", controller.UpdateDataDosen)
-	page.Delete("dosen/delete/:kode_dosen", controller.DeleteDosenByKodeDosen)
+
 	
 	page.Get("/docs/*", swagger.HandlerDefault)
 }

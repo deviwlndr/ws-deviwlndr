@@ -350,39 +350,3 @@ func UpdateDataDosen(c *fiber.Ctx) error {
 
 
 
-func DeleteDosenByKodeDosen(c *fiber.Ctx) error {
-	// Ambil kode_dosen dari parameter URL
-	kodeDosen := c.Params("kode_dosen")
-	if kodeDosen == "" {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-			"status":  http.StatusBadRequest,
-			"message": "kode_dosen parameter is required",
-		})
-	}
-
-	// Mengonversi kode_dosen menjadi integer
-	kodeDosenInt, err := strconv.Atoi(kodeDosen)
-	if err != nil {
-		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-			"status":  http.StatusBadRequest,
-			"message": "Invalid kode_dosen format, should be a number",
-		})
-	}
-
-	// Panggil fungsi DeleteDosenByKodeDosen untuk menghapus data dosen
-	err = cek.DeleteDosenByKodeDosen(kodeDosenInt)
-	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"status":  http.StatusInternalServerError,
-			"message": fmt.Sprintf("Error deleting data for kode_dosen %d", kodeDosenInt),
-			"error":   err.Error(),
-		})
-	}
-
-	// Jika berhasil, kirim respon sukses
-	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"status":  http.StatusOK,
-		"message": fmt.Sprintf("Dosen with kode_dosen %d successfully deleted", kodeDosenInt),
-	})
-}
-

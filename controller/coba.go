@@ -295,6 +295,53 @@ func InsertDosen(c *fiber.Ctx) error {
 	})
 }
 
+// UpdateDataDosen handles the HTTP request for updating a dosen record based on kode_dosen
+func UpdateDataDosen(c *fiber.Ctx) error {
+	// Get the kode_dosen from the URL parameter
+	kodeDosen := c.Params("kode_dosen")
+
+	// Parse kode_dosen into an integer
+	kodeDosenInt, err := strconv.Atoi(kodeDosen)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid kode_dosen format",
+		})
+	}
+
+	// Parse the request body into a Dosen object
+	var dosen inimodel.Dosen
+	if err := c.BodyParser(&dosen); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Failed to parse request body",
+		})
+	}
+
+	// Call the UpdateDosen function with kode_dosen and the Dosen object
+	updated, err := cek.UpdateDosen(kodeDosenInt, dosen)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": err.Error(),
+		})
+	}
+
+	if !updated {
+		return c.Status(http.StatusNotFound).JSON(fiber.Map{
+			"status":  http.StatusNotFound,
+			"message": fmt.Sprintf("No dosen found with kode_dosen %d", kodeDosenInt),
+		})
+	}
+
+	// Return success response
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  http.StatusOK,
+		"message": "Data successfully updated",
+	})
+}
+
+
 
 
 

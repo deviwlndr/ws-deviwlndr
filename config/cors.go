@@ -18,11 +18,7 @@ var origins = []string{
 	"https://whatsauth.github.io",
 	"https://deviwlndr.github.io",
 	"http://127.0.0.1:5501",
-	"http://127.0.0.1:55859",
-	"http://127.0.0.1:5502",
-	"http://127.0.0.1:5503",
-	"http://127.0.0.1:40013",
-	"http://127.0.0.1:8080",
+
 
 }
 

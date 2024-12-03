@@ -295,7 +295,7 @@ func InsertDosen(c *fiber.Ctx) error {
 	})
 }
 
-/// UpdateDataDosen handles the HTTP request for updating a dosen record based on kode_dosen
+// UpdateDataDosen handles the HTTP request for updating a dosen record based on kode_dosen
 func UpdateDataDosen(c *fiber.Ctx) error {
 	// Get the kode_dosen from the URL parameter
 	kodeDosen := c.Params("kode_dosen")

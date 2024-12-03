@@ -31,7 +31,6 @@ func Web(page *fiber.App) {
 	//url dosen
 	page.Get("/dosen/:kode_dosen", controller.GetDosenFromKodeDosen)
 	page.Post("/insertdosen", controller.InsertDosen)
-	page.Put("dosen/update/:kode_dosen", controller.UpdateDataDosen)
 
 	
 	page.Get("/docs/*", swagger.HandlerDefault)

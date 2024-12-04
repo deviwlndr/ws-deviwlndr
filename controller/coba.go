@@ -164,6 +164,14 @@ func UpdateDataMahasiswa(c *fiber.Ctx) error {
 		})
 	}
 
+	// Pastikan NPM yang diterima sesuai dengan NPM yang ada di URL
+	if mahasiswa.Npm != strconv.Atoi(npm) {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "NPM in request body does not match NPM in URL",
+		})
+	}
+
 	// Panggil fungsi UpdateMahasiswa dengan NPM dan struct Mahasiswa
 	success, err := cek.UpdateMahasiswa(
 		mahasiswa.Npm,         // NPM mahasiswa untuk mencari data

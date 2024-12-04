@@ -95,10 +95,6 @@ github.com/mattn/go-runewidth v0.0.15 h1:UNAjwbU9l54TA3KzvqLGxwWjHmMgBUVhBiTjelZ
 github.com/mattn/go-runewidth v0.0.15/go.mod h1:Jdepj2loyihRzMpdS35Xk/zdY8IAYHsh153qUoGf23w=
 github.com/mattn/go-sqlite3 v1.14.22 h1:2gZY6PC6kBnID23Tichd1K+Z0oS6nE/XwU+Vz/5o4kU=
 github.com/mattn/go-sqlite3 v1.14.22/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
-github.com/mhrndiva/kemahasiswaan v0.0.20 h1:NllXPkV6hZDBNktXWbNPdzWZMdzX8jA0ND40lFPZeFA=
-github.com/mhrndiva/kemahasiswaan v0.0.20/go.mod h1:MGQRUORBXzLoK+ukhegF5pEDyasiWC76EEYj6cOBZ6Y=
-github.com/mhrndiva/kemahasiswaan v0.0.21 h1:JqlG/EYQiPeTOhZVFumGediQn1JiNYP2nkhKZyxiagQ=
-github.com/mhrndiva/kemahasiswaan v0.0.21/go.mod h1:MGQRUORBXzLoK+ukhegF5pEDyasiWC76EEYj6cOBZ6Y=
 github.com/mhrndiva/kemahasiswaan v0.0.22 h1:fJYAZ5TfIE5vxcAfgyS8TlKQJeU3lfWsRDNBTGwi8as=
 github.com/mhrndiva/kemahasiswaan v0.0.22/go.mod h1:MGQRUORBXzLoK+ukhegF5pEDyasiWC76EEYj6cOBZ6Y=
 github.com/microsoft/go-mssqldb v1.0.0 h1:k2p2uuG8T5T/7Hp7/e3vMGTnnR0sU4h8d1CcC71iLHU=

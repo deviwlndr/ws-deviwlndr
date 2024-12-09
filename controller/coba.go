@@ -39,6 +39,12 @@ func GetMahasiswa(c *fiber.Ctx) error {
 	return c.JSON(ps)
 
 }
+func GetDosen(c *fiber.Ctx) error {
+	ps := cek.GetAllDosen()
+
+	return c.JSON(ps)
+
+}
 
 func GetMahasiswaID(c *fiber.Ctx) error {
 	id := c.Params("id")

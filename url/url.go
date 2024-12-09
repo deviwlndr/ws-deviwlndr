@@ -33,6 +33,7 @@ func Web(page *fiber.App) {
 	page.Get("/dosen", controller.GetDosen)
 	page.Get("/dosen/:kode_dosen", controller.GetDosenFromKodeDosen)
 	page.Post("/insertdosen", controller.InsertDosen)
+	page.Delete("/dosen/delete/:kode_dosen", controller.DeleteDataDosen)
 
 	page.Get("/docs/*", swagger.HandlerDefault)
 }

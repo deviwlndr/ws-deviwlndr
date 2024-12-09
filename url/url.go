@@ -30,9 +30,9 @@ func Web(page *fiber.App) {
 	page.Delete("/mahasiswa/delete/:npm", controller.DeleteMahasiswaByNPM)
 
 	//url dosen
+	page.Get("/dosen", controller.GetDosen)
 	page.Get("/dosen/:kode_dosen", controller.GetDosenFromKodeDosen)
 	page.Post("/insertdosen", controller.InsertDosen)
 
-	
 	page.Get("/docs/*", swagger.HandlerDefault)
 }

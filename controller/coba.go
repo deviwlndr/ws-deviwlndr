@@ -3,16 +3,16 @@ package controller
 import (
 	"errors"
 	"fmt"
-	"strconv" 
+	"net/http"
+	"strconv"
+
 	"github.com/aiteung/musik"
-	"github.com/gofiber/fiber/v2"
-	inimodel"github.com/mhrndiva/kemahasiswaan/model"
-	cek "github.com/mhrndiva/kemahasiswaan/module"
 	"github.com/deviwlndr/ws-deviwlndr/config"
+	"github.com/gofiber/fiber/v2"
+	inimodel "github.com/mhrndiva/kemahasiswaan/model"
+	cek "github.com/mhrndiva/kemahasiswaan/module"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	"net/http"
-
 )
 
 // GetMahasiswaID godoc
@@ -35,7 +35,7 @@ func Homepage(c *fiber.Ctx) error {
 func GetMahasiswa(c *fiber.Ctx) error {
 	ps := cek.GetAllMahasiswa()
 	return c.JSON(ps)
-	
+
 }
 
 func GetMahasiswaID(c *fiber.Ctx) error {
@@ -70,43 +70,41 @@ func GetMahasiswaID(c *fiber.Ctx) error {
 }
 
 func GetMahasiswaFromNPM(c *fiber.Ctx) error {
-    npm := c.Params("npm") // mengambil parameter npm dari URL
-    if npm == "" {
-        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-            "status":  http.StatusBadRequest,
-            "message": "NPM parameter is required",
-        })
-    }
+	npm := c.Params("npm") // mengambil parameter npm dari URL
+	if npm == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "NPM parameter is required",
+		})
+	}
 
-    // Mengonversi npm yang berupa string ke integer
-    npmInt, err := strconv.Atoi(npm)  // Mengonversi npm string menjadi integer
-    if err != nil {
-        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-            "status":  http.StatusBadRequest,
-            "message": "Invalid NPM format, should be a number",
-        })
-    }
+	// Mengonversi npm yang berupa string ke integer
+	npmInt, err := strconv.Atoi(npm) // Mengonversi npm string menjadi integer
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid NPM format, should be a number",
+		})
+	}
 
-    // Panggil fungsi GetMahasiswaFromNPM untuk mengambil data berdasarkan npm
-    mahasiswa := cek.GetMahasiswaFromNPM(npmInt)  // Panggil fungsi dengan npm dalam format integer
+	// Panggil fungsi GetMahasiswaFromNPM untuk mengambil data berdasarkan npm
+	mahasiswa := cek.GetMahasiswaFromNPM(npmInt) // Panggil fungsi dengan npm dalam format integer
 
-    // Periksa apakah data mahasiswa ditemukan
-    if mahasiswa.Npm == 0 {  // Jika Npm 0 berarti data tidak ditemukan
-        return c.Status(http.StatusNotFound).JSON(fiber.Map{
-            "status":  http.StatusNotFound,
-            "message": fmt.Sprintf("No data found for NPM %d", npmInt),
-        })
-    }
+	// Periksa apakah data mahasiswa ditemukan
+	if mahasiswa.Npm == 0 { // Jika Npm 0 berarti data tidak ditemukan
+		return c.Status(http.StatusNotFound).JSON(fiber.Map{
+			"status":  http.StatusNotFound,
+			"message": fmt.Sprintf("No data found for NPM %d", npmInt),
+		})
+	}
 
-    // Mengembalikan data mahasiswa yang ditemukan
-    return c.JSON(fiber.Map{
-        "status":    http.StatusOK,
-        "message":   "Data found",
-        "mahasiswa": mahasiswa,
-    })
+	// Mengembalikan data mahasiswa yang ditemukan
+	return c.JSON(fiber.Map{
+		"status":    http.StatusOK,
+		"message":   "Data found",
+		"mahasiswa": mahasiswa,
+	})
 }
-
-
 
 func InsertDataMahasiswa(c *fiber.Ctx) error {
 	var mahasiswa inimodel.Mahasiswa
@@ -121,13 +119,13 @@ func InsertDataMahasiswa(c *fiber.Ctx) error {
 
 	// Pemanggilan fungsi cek.InsertMahasiswa dengan parameter sesuai
 	insertedID := cek.InsertMahasiswa(
-		mahasiswa.Nama,           // Nama mahasiswa
-		mahasiswa.Phone_number,   // Phone number mahasiswa
-		mahasiswa.Jurusan,        // Jurusan mahasiswa
-		mahasiswa.Npm,            // NPM mahasiswa
-		mahasiswa.Alamat,         // Alamat mahasiswa
-		mahasiswa.Email,          // Email mahasiswa
-		mahasiswa.Poin,           // Poin mahasiswa
+		mahasiswa.Nama,         // Nama mahasiswa
+		mahasiswa.Phone_number, // Phone number mahasiswa
+		mahasiswa.Jurusan,      // Jurusan mahasiswa
+		mahasiswa.Npm,          // NPM mahasiswa
+		mahasiswa.Alamat,       // Alamat mahasiswa
+		mahasiswa.Email,        // Email mahasiswa
+		mahasiswa.Poin,         // Poin mahasiswa
 	)
 
 	return c.Status(http.StatusOK).JSON(fiber.Map{
@@ -138,99 +136,84 @@ func InsertDataMahasiswa(c *fiber.Ctx) error {
 }
 
 func UpdateDataMahasiswa(c *fiber.Ctx) error {
-    // Ambil NPM dari parameter URL
-    npm := c.Params("npm")
-    if npm == "" {
-        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-            "status":  http.StatusBadRequest,
-            "message": "NPM is required",
-        })
-    }
+	// Ambil NPM dari parameter URL
+	npmParam := c.Params("npm")
 
-    // Konversi NPM ke integer jika perlu
-    npmInt, err := strconv.Atoi(npm)
-    if err != nil {
-        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-            "status":  http.StatusBadRequest,
-            "message": "Invalid NPM format, must be a number",
-        })
-    }
+	// Konversi NPM dari string ke int
+	npm, err := strconv.Atoi(npmParam)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid NPM format",
+		})
+	}
 
-    // Parsing body request ke struct Mahasiswa
-    var mahasiswa inimodel.Mahasiswa
-    if err := c.BodyParser(&mahasiswa); err != nil {
-        fmt.Println("Error parsing body:", err)
-        return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-            "status":  http.StatusInternalServerError,
-            "message": err.Error(),
-        })
-    }
+	// Parse body request ke struct Mahasiswa
+	var mahasiswa inimodel.Mahasiswa
+	if err := c.BodyParser(&mahasiswa); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid request body",
+		})
+	}
 
-    // Menampilkan data mahasiswa yang diterima
-    fmt.Printf("Mahasiswa data parsed from body: %+v\n", mahasiswa)
+	// Panggil fungsi UpdateMahasiswa
+	success, err := cek.UpdateMahasiswa(npm, mahasiswa)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": err.Error(),
+		})
+	}
 
-    // Panggil fungsi untuk mengupdate data mahasiswa
-    success, err := cek.UpdateMahasiswa(npmInt, mahasiswa)
-    
-    if err != nil {
-        // Menangani kesalahan saat update data
-        return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-            "status":  http.StatusInternalServerError,
-            "message": fmt.Sprintf("Failed to update mahasiswa data: %v", err),
-        })
-    }
+	// Cek apakah update berhasil
+	if !success {
+		return c.Status(http.StatusNotFound).JSON(fiber.Map{
+			"status":  http.StatusNotFound,
+			"message": fmt.Sprintf("No mahasiswa found with NPM %d", npm),
+		})
+	}
 
-    if !success {
-        // Jika mahasiswa dengan NPM tersebut tidak ditemukan
-        return c.Status(http.StatusNotFound).JSON(fiber.Map{
-            "status":  http.StatusNotFound,
-            "message": fmt.Sprintf("No mahasiswa found with NPM %d", npmInt),
-        })
-    }
-
-    // Jika berhasil, kirim respons sukses
-    return c.Status(http.StatusOK).JSON(fiber.Map{
-        "status":  http.StatusOK,
-        "message": "Mahasiswa data successfully updated",
-        "data":    mahasiswa, // Mengembalikan data yang diperbarui
-    })
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  http.StatusOK,
+		"message": "Data successfully updated",
+	})
 }
-
 
 func DeleteMahasiswaByNPM(c *fiber.Ctx) error {
-    npm := c.Params("npm")
-    if npm == "" {
-        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-            "status":  http.StatusBadRequest,
-            "message": "NPM is required",
-        })
-    }
+	npm := c.Params("npm")
+	if npm == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "NPM is required",
+		})
+	}
 
-    // Mengonversi npm menjadi integer
-    npmInt, err := strconv.Atoi(npm)
-    if err != nil {
-        return c.Status(http.StatusBadRequest).JSON(fiber.Map{
-            "status":  http.StatusBadRequest,
-            "message": "Invalid NPM format, should be a number",
-        })
-    }
+	// Mengonversi npm menjadi integer
+	npmInt, err := strconv.Atoi(npm)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid NPM format, should be a number",
+		})
+	}
 
-    // Panggil fungsi untuk menghapus mahasiswa berdasarkan NPM
-    err = cek.DeleteMahasiswaByNPM(npmInt)  // Pastikan fungsi ini ada di dalam cek
-    if err != nil {
-        return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-            "status":  http.StatusInternalServerError,
-            "message": fmt.Sprintf("Error deleting data for NPM %d", npmInt),
-        })
-    }
+	// Panggil fungsi untuk menghapus mahasiswa berdasarkan NPM
+	err = cek.DeleteMahasiswaByNPM(npmInt) // Pastikan fungsi ini ada di dalam cek
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": fmt.Sprintf("Error deleting data for NPM %d", npmInt),
+		})
+	}
 
-    return c.Status(http.StatusOK).JSON(fiber.Map{
-        "status":  http.StatusOK,
-        "message": fmt.Sprintf("Data with NPM %d deleted successfully", npmInt),
-    })
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  http.StatusOK,
+		"message": fmt.Sprintf("Data with NPM %d deleted successfully", npmInt),
+	})
 }
 
-//DOSEN 
+// DOSEN
 func GetDosenFromKodeDosen(c *fiber.Ctx) error {
 	// Ambil kode_dosen dari parameter URL
 	kodeDosen := c.Params("kode_dosen")
@@ -261,12 +244,11 @@ func GetDosenFromKodeDosen(c *fiber.Ctx) error {
 
 	// Jika berhasil, kirim respon dengan data dosen
 	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"status": http.StatusOK,
+		"status":  http.StatusOK,
 		"message": fmt.Sprintf("Data found for kode_dosen %d", kodeDosenInt),
-		"dosen": dosen,
+		"dosen":   dosen,
 	})
 }
-
 
 // InsertDosen handles the insertion of a new Dosen
 func InsertDosen(c *fiber.Ctx) error {
@@ -292,9 +274,8 @@ func InsertDosen(c *fiber.Ctx) error {
 
 	// Jika berhasil, kirim respon sukses dengan ID yang dimasukkan
 	return c.Status(http.StatusOK).JSON(fiber.Map{
-		"status":   http.StatusOK,
-		"message":  "Dosen successfully inserted",
+		"status":     http.StatusOK,
+		"message":    "Dosen successfully inserted",
 		"insertedID": insertedID,
 	})
 }
-

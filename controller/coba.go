@@ -288,3 +288,35 @@ func InsertDosen(c *fiber.Ctx) error {
 		"insertedID": insertedID,
 	})
 }
+
+func DeleteDataDosen(c *fiber.Ctx) error {
+	kode_dosen := c.Params("kode_dosen")
+	if kode_dosen == "" {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Kode dosen is required",
+		})
+	}
+
+	kode_dosenInt, err := strconv.Atoi(kode_dosen)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  http.StatusBadRequest,
+			"message": "Invalid NPM format, should be a number",
+		})
+	}
+
+	
+	err = cek.DeleteDosenByKodeDosen(kode_dosenInt) // Pastikan fungsi ini ada di dalam cek
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  http.StatusInternalServerError,
+			"message": fmt.Sprintf("Error deleting data for Kode dosen %d", kode_dosenInt),
+		})
+	}
+
+	return c.Status(http.StatusOK).JSON(fiber.Map{
+		"status":  http.StatusOK,
+		"message": fmt.Sprintf("Data with Kode dosen %d deleted successfully", kode_dosenInt),
+	})
+}

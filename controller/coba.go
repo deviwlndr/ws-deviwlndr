@@ -136,10 +136,10 @@ func InsertDataMahasiswa(c *fiber.Ctx) error {
 }
 
 func UpdateDataMahasiswa(c *fiber.Ctx) error {
-	// Ambil NPM dari parameter URL
+	// Ambil NPM dari URL parameter
 	npmParam := c.Params("npm")
 
-	// Konversi NPM dari string ke int
+	/// Konversi NPM dari string ke integer
 	npm, err := strconv.Atoi(npmParam)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
@@ -166,7 +166,7 @@ func UpdateDataMahasiswa(c *fiber.Ctx) error {
 		})
 	}
 
-	// Cek apakah update berhasil
+	// Jika tidak ada mahasiswa yang diperbarui
 	if !success {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{
 			"status":  http.StatusNotFound,
@@ -174,6 +174,7 @@ func UpdateDataMahasiswa(c *fiber.Ctx) error {
 		})
 	}
 
+	// Jika berhasil
 	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status":  http.StatusOK,
 		"message": "Data successfully updated",

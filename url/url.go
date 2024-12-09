@@ -24,6 +24,7 @@ func Web(page *fiber.App) {
 	page.Get("/mahasiswa", controller.GetMahasiswa)
 	page.Get("/mahasiswa/:id", controller.GetMahasiswaID)
 	page.Get("/mahasiswa/npm/:npm", controller.GetMahasiswaFromNPM)
+	page.Get("/mahasiswa/npm/:id", controller.GetMahasiswaFromNPM)
 	page.Post("/insertmahasiswa", controller.InsertDataMahasiswa)
 	page.Put("/mahasiswa/update/:npm", controller.UpdateDataMahasiswa)
 	page.Delete("/mahasiswa/delete/:npm", controller.DeleteMahasiswaByNPM)

@@ -9,6 +9,7 @@ import (
 	"github.com/aiteung/musik"
 	"github.com/deviwlndr/ws-deviwlndr/config"
 	"github.com/gofiber/fiber/v2"
+
 	inimodel "github.com/mhrndiva/kemahasiswaan/model"
 	cek "github.com/mhrndiva/kemahasiswaan/module"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -34,6 +35,13 @@ func Homepage(c *fiber.Ctx) error {
 
 func GetMahasiswa(c *fiber.Ctx) error {
 	ps := cek.GetAllMahasiswa()
+
+	return c.JSON(ps)
+
+}
+func GetDosen(c *fiber.Ctx) error {
+	ps := cek.GetAllDosen()
+
 	return c.JSON(ps)
 
 }
